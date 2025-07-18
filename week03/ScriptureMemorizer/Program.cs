@@ -2,18 +2,26 @@ using System;
 
 namespace ScriptureMemorizer
 {
+    //Has a library of scriptures that can be selected at random.
     class Program
     {
         static void Main(string[] args)
         {
-            // Load a scripture reference
-            ScriptureReference reference = ScriptureReference.Parse("Proverbs 3:5-6");
+            // Define your library of scriptures
+            List<(string reference, string text)> scriptureLibrary = new List<(string, string)>
+            {
+                ("Proverbs 3:5-6", "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."),
+                ("John 3:16", "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."),
+                ("2 Nephi 2:25", "Adam fell that men might be; and men are, that they might have joy."),
+                ("Doctrine and Covenants 4:2", "O ye that embark in the service of God, see that ye serve him with all your heart, might, mind and strength..."),
+                ("Psalm 23:1", "The Lord is my shepherd; I shall not want.")
+            };
 
-            // Scripture text
-            string text = "Trust in the Lord with all thine heart; and lean not unto thine own understanding. "
-                        + "In all thy ways acknowledge him, and he shall direct thy paths.";
+            Random rand = new Random();
+            var selected = scriptureLibrary[rand.Next(scriptureLibrary.Count)];
 
-            Scripture scripture = new Scripture(reference, text);
+            ScriptureReference reference = ScriptureReference.Parse(selected.reference);
+            Scripture scripture = new Scripture(reference, selected.text);
 
             while (true)
             {
@@ -31,18 +39,8 @@ namespace ScriptureMemorizer
                 string input = Console.ReadLine().Trim().ToLower();
                 if (input == "quit") break;
 
-                scripture.HideRandomWords(3); // Hide 3 words at a time
+                scripture.HideRandomWords(3);
             }
         }
     }
-
-    /*
-     * Creativity and Stretch Features:
-     * - This program exceeds the core requirements by:
-     *   • Only hiding words that have not yet been hidden (stretch challenge).
-     *   • Supporting scripture references with either a single verse or a range.
-     *   • Using proper encapsulation: each class handles its own responsibilities.
-     *   • Clear display formatting, hiding words with matching-length underscores.
-     *   • Each class is placed in its own file, following C# conventions.
-     */
 }
