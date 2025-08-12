@@ -1,0 +1,21 @@
+using System;
+
+namespace ActivityTracker
+{
+    public class Running : Activity
+    {
+        private double _distance; // miles
+
+        public Running(DateTime date, double minutes, double distance)
+            : base(date, minutes)
+        {
+            _distance = distance;
+        }
+
+        public override double GetDistance() => _distance;
+
+        public override double GetSpeed() => (GetDistance() / Minutes) * 60;
+
+        public override double GetPace() => Minutes / GetDistance();
+    }
+}
